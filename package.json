@@ -1,0 +1,10 @@
+{
+  "name": "js_jobs_tg_bot",
+  "version": "0.0.0",
+  "main": "main.js",
+  "license": "MIT",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.27.1",
+    "optimist": "^0.6.1"
+  }
+}
