@@ -7,16 +7,23 @@ const infoChannelAdminsActivator = require('./commands/updateChannelAdmins').act
 const checkPermissionsForPublish = require('./commands/publishJobVacancy').checkPermissionsForPublish;
 const publishJobVacancy = require('./commands/publishJobVacancy').publishJobVacancy;
 
+const warnJobVacancy = require('./commands/destroyVacancyTimeout').warnJobVacancy;
+const checkPermissionsForWarn = require('./commands/destroyVacancyTimeout').checkPermissionsForWarn;
+
 bot.on('message', async (msg) => {
   if (!admins.has(channelId)) {
     await updateInfoChannelAdmins(channelId);
+    await updateInfoChannelAdmins(msg.chat.id);
   }
   if (infoChannelAdminsActivator(msg)) {
     await updateInfoChannelAdmins(channelId);
     const replyText = 'обновил';
-    bot.sendMessage(msg.chat.id, replyText, { reply_to_message_id: msg.message_id })
+    bot.sendMessage(msg.chat.id, replyText, { reply_to_message_id: msg.message_id });
   }
   if (checkPermissionsForPublish(msg, channelId)) {
     publishJobVacancy(msg, channelId)
+  }
+  if (checkPermissionsForWarn(msg)) {
+    warnJobVacancy(msg)
   }
 });

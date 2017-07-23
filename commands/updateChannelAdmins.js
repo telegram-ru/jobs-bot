@@ -3,7 +3,7 @@ const botName = require('../init').name;
 
 const admins = new Map();
 
-const keywords = new Set(['обнови список публикаторов']);
+const keywords = new Set(['/update_admins']);
 
 const isKeyword = (text) => (keywords.has(text.toLowerCase()));
 
@@ -13,8 +13,10 @@ async function updateInfoChannelAdmins(channelId) {
 }
 
 function activator (msg) {
-  const [name, ...command] = msg.text.split(' ');
-  if (name.startsWith(botName) && isKeyword(command.join(' '))) {
+  // const [name, ...command] = msg.text.split(' ');
+  // const [name, ...command] = msg.text.split(' ');
+  // if (name.startsWith(botName) && isKeyword(command.join(' '))) {
+  if (isKeyword(msg.text)) {
     return true;
   }
 }
