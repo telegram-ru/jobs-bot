@@ -8,8 +8,13 @@ const checkPermissionsForPublish = require('./commands/publishJobVacancy').check
 const publishJobVacancy = require('./commands/publishJobVacancy').publishJobVacancy;
 
 bot.on('message', async (msg) => {
-  if (!admins.has(channelId) || infoChannelAdminsActivator(msg)) {
+  if (!admins.has(channelId)) {
     await updateInfoChannelAdmins(channelId);
+  }
+  if (infoChannelAdminsActivator(msg)) {
+    await updateInfoChannelAdmins(channelId);
+    const replyText = 'обновил';
+    bot.sendMessage(msg.chat.id, replyText, { reply_to_message_id: msg.message_id })
   }
   if (checkPermissionsForPublish(msg, channelId)) {
     publishJobVacancy(msg, channelId)
