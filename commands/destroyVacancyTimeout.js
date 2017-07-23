@@ -4,7 +4,6 @@ const admins = require('./updateChannelAdmins').admins;
 const keywords = new Set(['формат']);
 
 const isReply = (msg) => (msg.reply_to_message != null);
-const isJobVacancy = (msg) => msg.reply_to_message.text.includes('#вакансия');
 const isKeyword = (msg) => (keywords.has(msg.text.toLowerCase()));
 const isAdmin = (msg, chatId) => (admins.has(chatId) && admins.get(chatId).has(msg.from.id));
 
@@ -20,7 +19,7 @@ function warnJobVacancy(msg) {
 }
 
 function checkPermissionsForWarn(msg) {
-  return (isReply(msg) && isJobVacancy(msg) && isKeyword(msg) && isAdmin(msg, msg.chat.id))
+  return (isReply(msg) && isKeyword(msg) && isAdmin(msg, msg.chat.id))
 }
 
 module.exports.checkPermissionsForWarn = checkPermissionsForWarn;
