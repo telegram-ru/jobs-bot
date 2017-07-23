@@ -18,7 +18,13 @@ const replyText = 'Вакансия опубликована в @javascript_jobs
 const admins = new Map();
 const userHasPerms = (msg, channelId) => admins.get(channelId).has(msg.from.id);
 
+function publishJobVacancy(msg) {
+  bot.forwardMessage(forwardTo, msg.chat.id, msg.reply_to_message.message_id);
+  bot.sendMessage(msg.chat.id, replyText, { reply_to_message_id: msg.reply_to_message.message_id })
+}
+
 bot.on('message', (msg) => {
+  if (!(isReply(msg) && isJobVacancy(msg) && isKeyword(msg))) return;
   bot.getChatAdministrators(forwardTo)
     .then((adms) => {
       admins.set(forwardTo, adms.reduce((channelAdmins, { user }) => {
@@ -26,9 +32,8 @@ bot.on('message', (msg) => {
         return channelAdmins
       }, new Set()));
     }).then(() => {
-      if (isReply(msg) && isJobVacancy(msg) && userHasPerms(msg, forwardTo) && isKeyword(msg)) {
-        bot.forwardMessage(forwardTo, msg.chat.id, msg.reply_to_message.message_id);
-        bot.sendMessage(msg.chat.id, replyText, { reply_to_message_id: msg.reply_to_message.message_id })
+      if (userHasPerms(msg, forwardTo)) {
+        publishJobVacancy(msg)
       }
     });
 });
