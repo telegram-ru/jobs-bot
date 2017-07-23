@@ -1,39 +1,17 @@
 'use strict';
+const bot = require('./init').bot;
+const channelId = require('./init').channelId;
+const admins = require('./commands/updateChannelAdmins').admins;
+const updateInfoChannelAdmins = require('./commands/updateChannelAdmins').updateInfoChannelAdmins;
+const infoChannelAdminsActivator = require('./commands/updateChannelAdmins').activator;
+const checkPermissionsForPublish = require('./commands/publishJobVacancy').checkPermissionsForPublish;
+const publishJobVacancy = require('./commands/publishJobVacancy').publishJobVacancy;
 
-const TelegramBot = require('node-telegram-bot-api');
-
-const opts = require('optimist').argv;
-const token = opts.token;
-const forwardTo = opts.channel;
-
-const bot = new TelegramBot(token, {polling: true});
-
-const keywords = new Set(['в канал', 'В канал']);
-
-const isReply = (msg) => (msg.reply_to_message != null);
-const isJobVacancy = (msg) => msg.reply_to_message.text.includes('#вакансия');
-const isKeyword = (msg) => (keywords.has(msg.text.toLowerCase()));
-const replyText = 'Вакансия опубликована в @javascript_jobs_feed';
-
-const admins = new Map();
-const userHasPerms = (msg, channelId) => admins.get(channelId).has(msg.from.id);
-
-function publishJobVacancy(msg) {
-  bot.forwardMessage(forwardTo, msg.chat.id, msg.reply_to_message.message_id);
-  bot.sendMessage(msg.chat.id, replyText, { reply_to_message_id: msg.reply_to_message.message_id })
-}
-
-bot.on('message', (msg) => {
-  if (!(isReply(msg) && isJobVacancy(msg) && isKeyword(msg))) return;
-  bot.getChatAdministrators(forwardTo)
-    .then((adms) => {
-      admins.set(forwardTo, adms.reduce((channelAdmins, { user }) => {
-        channelAdmins.add(user.id);
-        return channelAdmins
-      }, new Set()));
-    }).then(() => {
-      if (userHasPerms(msg, forwardTo)) {
-        publishJobVacancy(msg)
-      }
-    });
+bot.on('message', async (msg) => {
+  if (!admins.has(channelId) || infoChannelAdminsActivator(msg)) {
+    await updateInfoChannelAdmins(channelId);
+  }
+  if (checkPermissionsForPublish(msg, channelId)) {
+    publishJobVacancy(msg, channelId)
+  }
 });
