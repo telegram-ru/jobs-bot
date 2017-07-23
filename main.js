@@ -13,7 +13,9 @@ const checkPermissionsForWarn = require('./commands/destroyVacancyTimeout').chec
 bot.on('message', async (msg) => {
   if (!admins.has(channelId)) {
     await updateInfoChannelAdmins(channelId);
-    await updateInfoChannelAdmins(msg.chat.id);
+    if (msg.chat.type === 'supergroup') {
+      await updateInfoChannelAdmins(msg.chat.id);
+    }
   }
   if (infoChannelAdminsActivator(msg)) {
     await updateInfoChannelAdmins(channelId);

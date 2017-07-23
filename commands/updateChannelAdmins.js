@@ -16,7 +16,7 @@ function activator (msg) {
   // const [name, ...command] = msg.text.split(' ');
   // const [name, ...command] = msg.text.split(' ');
   // if (name.startsWith(botName) && isKeyword(command.join(' '))) {
-  if (isKeyword(msg.text)) {
+  if (msg.chat.type === 'private' && isKeyword(msg.text)) {
     return true;
   }
 }
