@@ -1,31 +1,27 @@
-'use strict';
 const bot = require('./init').bot;
+const channel = require('./init').channel;
 const channelId = require('./init').channelId;
-const admins = require('./commands/updateChannelAdmins').admins;
-const updateInfoChannelAdmins = require('./commands/updateChannelAdmins').updateInfoChannelAdmins;
-const infoChannelAdminsActivator = require('./commands/updateChannelAdmins').activator;
-const checkPermissionsForPublish = require('./commands/publishJobVacancy').checkPermissionsForPublish;
-const publishJobVacancy = require('./commands/publishJobVacancy').publishJobVacancy;
-
-const warnJobVacancy = require('./commands/destroyVacancyTimeout').warnJobVacancy;
-const checkPermissionsForWarn = require('./commands/destroyVacancyTimeout').checkPermissionsForWarn;
+const channels = require('./init').channels;
+const setChannelId = require('./init').setChannelId;
+const admins = require('./admins').admins;
+const updateAdmins = require('./admins').updateAdmins;
+const commands = require('./commands/index');
 
 bot.on('message', async (msg) => {
-  if (!admins.has(channelId)) {
-    await updateInfoChannelAdmins(channelId);
-    if (msg.chat.type === 'supergroup') {
-      await updateInfoChannelAdmins(msg.chat.id);
+  try {
+    if (!channels.has(channel)) {
+      await setChannelId();
+      await updateAdmins(channelId())
     }
+  } catch (err) {
+    console.warn(err)
   }
-  if (infoChannelAdminsActivator(msg)) {
-    await updateInfoChannelAdmins(channelId);
-    const replyText = 'обновил';
-    bot.sendMessage(msg.chat.id, replyText, { reply_to_message_id: msg.message_id });
+  if (msg.chat.type === 'supergroup' && !admins.has(msg.chat.id)) {
+    await updateAdmins(msg.chat.id);
   }
-  if (checkPermissionsForPublish(msg, channelId)) {
-    publishJobVacancy(msg, channelId)
-  }
-  if (checkPermissionsForWarn(msg)) {
-    warnJobVacancy(msg)
+  try {
+    commands.forEach(activator => activator(msg))
+  } catch (err) {
+    console.warn('main', err)
   }
 });

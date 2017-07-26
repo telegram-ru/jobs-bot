@@ -1,26 +1,21 @@
+const updateAdmins = require('../admins').updateAdmins;
+const isKeyword = require('../validators').isKeyword;
+const channelId = require('../init').channelId;
 const bot = require('../init').bot;
-const botName = require('../init').name;
-
-const admins = new Map();
 
 const keywords = new Set(['/update_admins']);
 
-const isKeyword = (text) => (keywords.has(text.toLowerCase()));
-
-async function updateInfoChannelAdmins(channelId) {
-  const channelAdmins = await bot.getChatAdministrators(channelId);
-  admins.set(channelId, new Set(channelAdmins.map(({ user }) => user.id)));
-}
-
 function activator (msg) {
-  // const [name, ...command] = msg.text.split(' ');
-  // const [name, ...command] = msg.text.split(' ');
-  // if (name.startsWith(botName) && isKeyword(command.join(' '))) {
-  if (msg.chat.type === 'private' && isKeyword(msg.text)) {
-    return true;
+  try {
+    if (msg.chat.type === 'private' && isKeyword(msg, keywords)) {
+      updateAdmins(channelId());
+      const replyText = 'обновил';
+      bot.sendMessage(msg.chat.id, replyText, {reply_to_message_id: msg.message_id});
+      console.log('updateChannelAdmins', msg);
+    }
+  } catch (err) {
+    console.warn('updateChannelAdmins', err);
   }
 }
 
-module.exports.admins = admins;
-module.exports.updateInfoChannelAdmins = updateInfoChannelAdmins;
 module.exports.activator = activator;

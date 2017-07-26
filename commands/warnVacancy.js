@@ -1,13 +1,12 @@
 const bot = require('../init').bot;
-const admins = require('./updateChannelAdmins').admins;
+const isReply = require('../validators').isReply;
+const isKeyword = require('../validators').isKeyword;
+const isChatAdmin = require('../validators').isChatAdmin;
 
 const keywords = new Set(['формат']);
 
-const isReply = (msg) => (msg.reply_to_message != null);
-const isKeyword = (msg) => (keywords.has(msg.text.toLowerCase()));
-const isAdmin = (msg, chatId) => (admins.has(chatId) && admins.get(chatId).has(msg.from.id));
-
-function warnJobVacancy(msg) {
+function warnVacancy(msg) {
+  console.log('warnVacancy', msg);
   const replyText = 'Надо отредактировать по формату — тогда вакансия попадёт в канал ' +
     '[@javascript_jobs_feed](https://t.me/javascript_jobs_feed). ' +
     'Иначе её удалят. ' +
@@ -18,9 +17,14 @@ function warnJobVacancy(msg) {
   })
 }
 
-function checkPermissionsForWarn(msg) {
-  return (isReply(msg) && isKeyword(msg) && isAdmin(msg, msg.chat.id))
+function activator(msg) {
+  try {
+    if (isReply(msg) && isKeyword(msg, keywords) && isChatAdmin(msg, msg.chat.id)) {
+      warnVacancy(msg)
+    }
+  } catch (err) {
+    console.warn('warnVacancy', err)
+  }
 }
 
-module.exports.checkPermissionsForWarn = checkPermissionsForWarn;
-module.exports.warnJobVacancy = warnJobVacancy;
+module.exports.activator = activator;
