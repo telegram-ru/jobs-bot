@@ -1,17 +1,16 @@
-const updateAdmins = require('../admins').updateAdmins;
-const isKeyword = require('../validators').isKeyword;
-const channelId = require('../init').channelId;
-const bot = require('../init').bot;
+const { updateAdmins } = require('../admins');
+const { isKeyword } = require('../validators');
+const { bot, channelId } = require('../init');
 
 const keywords = new Set(['/update_admins']);
 
-function activator (msg) {
+async function activator (msg) {
+  console.log('updateChannelAdmins', msg);
+  const replyText = 'обновил';
   try {
     if (msg.chat.type === 'private' && isKeyword(msg, keywords)) {
-      updateAdmins(channelId());
-      const replyText = 'обновил';
-      bot.sendMessage(msg.chat.id, replyText, {reply_to_message_id: msg.message_id});
-      console.log('updateChannelAdmins', msg);
+      await updateAdmins(channelId());
+      await bot.sendMessage(msg.chat.id, replyText, {reply_to_message_id: msg.message_id});
     }
   } catch (err) {
     console.warn('updateChannelAdmins', err);

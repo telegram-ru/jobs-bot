@@ -1,10 +1,5 @@
-const bot = require('./init').bot;
-const channel = require('./init').channel;
-const channelId = require('./init').channelId;
-const channels = require('./init').channels;
-const setChannelId = require('./init').setChannelId;
-const admins = require('./admins').admins;
-const updateAdmins = require('./admins').updateAdmins;
+const { bot, channel, channels, channelId, setChannelId } = require('./init');
+const { admins, updateAdmins } = require('./admins');
 const commands = require('./commands/index');
 
 bot.on('message', async (msg) => {
