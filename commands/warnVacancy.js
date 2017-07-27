@@ -4,7 +4,7 @@ const { isChannelAdmin, isKeyword, isReply } = require('../validators');
 const keywords = new Set(['формат']);
 
 async function warnVacancy(msg) {
-  console.log('warnVacancy', msg);
+  console.log('warnVacancy');
   const replyText = 'Надо отредактировать по формату — тогда вакансия попадёт в канал ' +
     '[@javascript_jobs_feed](https://t.me/javascript_jobs_feed). ' +
     'Иначе её удалят. ' +
@@ -21,7 +21,7 @@ async function activator(msg) {
       await warnVacancy(msg)
     }
   } catch (err) {
-    console.warn('warnVacancy', err)
+    console.warn('warnVacancy', err, msg)
   }
 }
 
