@@ -1,10 +1,11 @@
 {
-  "name": "js_jobs_tg_bot",
-  "version": "0.0.0",
-  "main": "main.js",
+  "name": "telegram-jobs-bot",
+  "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
-    "node-telegram-bot-api": "^0.27.1",
-    "optimist": "^0.6.1"
+    "node-telegram-bot-api": "^0.27.1"
+  },
+  "scripts": {
+    "start": "node index.js"
   }
 }
