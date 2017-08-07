@@ -5,6 +5,7 @@ const {
   isKeyword,
   isReply
 } = require("../validators");
+const deleteCommandMessage = require("../utils/command_traces_cleaner").default;
 
 const keywords = new Set(["в канал"]);
 
@@ -20,6 +21,7 @@ async function publishVacancy(msg) {
   await bot.sendMessage(msg.chat.id, replyText, {
     reply_to_message_id: msg.reply_to_message.message_id
   });
+  await deleteCommandMessage(msg);
 }
 
 async function activator(msg) {
