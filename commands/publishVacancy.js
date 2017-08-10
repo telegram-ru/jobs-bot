@@ -1,6 +1,7 @@
 const { bot, channelId } = require("../init");
 const {
   isVacancy,
+  isCV,
   isChannelAdmin,
   isKeyword,
   isReply
@@ -28,7 +29,7 @@ async function activator(msg) {
   try {
     if (
       isReply(msg) &&
-      isVacancy(msg) &&
+      (isVacancy(msg) || isCV(msg)) &&
       isKeyword(msg, keywords) &&
       isChannelAdmin(msg)
     ) {
