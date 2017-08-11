@@ -1,6 +1,6 @@
 const { bot, channelId } = require("../init");
 const {
-  isVacancy,
+  isCV,
   isChannelAdmin,
   isKeyword,
   isReply
@@ -10,9 +10,9 @@ const deleteCommandMessage = require("../utils/command_traces_cleaner").default;
 const keywords = new Set(["в канал"]);
 
 async function publishVacancy(msg) {
-  console.log("publishVacancy");
+  console.log("publishCV");
   const replyText =
-    "Вакансия опубликована в " + process.env.APP_TELEGRAM_CHANNEL;
+    "Резюме опубликовано в " + process.env.APP_TELEGRAM_CHANNEL;
   await bot.forwardMessage(
     channelId(),
     msg.chat.id,
@@ -28,14 +28,14 @@ async function activator(msg) {
   try {
     if (
       isReply(msg) &&
-      isVacancy(msg) &&
+      isCV(msg) &&
       isKeyword(msg, keywords) &&
       isChannelAdmin(msg)
     ) {
       await publishVacancy(msg);
     }
   } catch (err) {
-    console.warn("publishVacancy", err, msg);
+    console.warn("publishCV", err, msg);
   }
 }
 
