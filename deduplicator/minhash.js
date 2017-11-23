@@ -111,6 +111,7 @@ function shingleHashList(str, kshingles=2) {
 }
 
 function shingles(original, kshingles=2) {
+  original = original.toLowerCase();
   const shingles = new Set();
   for(const wordlist of NGrams.ngrams(original, kshingles, null, '[end]')) {
     shingles.add(wordlist.join(" "));
@@ -119,6 +120,7 @@ function shingles(original, kshingles=2) {
 }
 
 function minhash(str) {
+  str = str.toLowerCase();
   const shingles = shingleHashList(str);
 
   const signature = [];
