@@ -12,9 +12,10 @@ const isChannelAdmin = msg =>
   admins.has(channelId()) && admins.get(channelId()).has(msg.from.id);
 
 const hasHashtag = (msg, hashtag) =>
-  msg.reply_to_message.text.includes(hashtag);
+  msg.text.includes(hashtag);
 
-const isVacancy = msg => hasHashtag(msg, "#вакансия");
+const isVacancy = msg => hasHashtag(msg.reply_to_message, "#вакансия");
+const isVacancyNotReply = msg => hasHashtag(msg, "#вакансия");
 const isCV = msg => hasHashtag(msg, "#резюме");
 
 module.exports.isReply = isReply;
@@ -24,3 +25,4 @@ module.exports.isChannelAdmin = isChannelAdmin;
 module.exports.hasHashtag = hasHashtag;
 module.exports.isVacancy = isVacancy;
 module.exports.isCV = isCV;
+module.exports.isVacancyNotReply = isVacancyNotReply;

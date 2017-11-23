@@ -9,10 +9,11 @@ const deleteCommandMessage = require("../utils/command_traces_cleaner").default;
 
 const keywords = new Set(["в канал"]);
 const replyText = "Вакансия опубликована в " + process.env.APP_TELEGRAM_CHANNEL;
+const storage = require('../storage').storage;
 
 async function publish(msg) {
   console.log("publishVacancy");
-
+  storage.add(msg.reply_to_message);
   await bot.forwardMessage(
     channelId(),
     msg.chat.id,
