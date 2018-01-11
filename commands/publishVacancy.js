@@ -7,8 +7,12 @@ const {
 } = require("../validators");
 const deleteCommandMessage = require("../utils/command_traces_cleaner").default;
 
-const keywords = new Set(["в канал"]);
-const replyText = "Вакансия опубликована в " + process.env.APP_TELEGRAM_CHANNEL;
+const channel = process.env.APP_TELEGRAM_CHANNEL;
+
+const keywords = new Set(["канал"]);
+const replyText = `
+Вакансия опубликована в канал ${channel}, спасибо за понимание правил
+`;
 
 async function publish(msg) {
   console.log("publishVacancy");

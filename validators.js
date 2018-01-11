@@ -13,7 +13,8 @@ const isChannelAdmin = msg =>
   admins.has(channelId()) && admins.get(channelId()).has(msg.from.id);
 
 const hasHashtag = (msg, hashtag) =>
-  !!msg.reply_to_message.text && msg.reply_to_message.text.includes(hashtag);
+  !!msg.reply_to_message.text &&
+  msg.reply_to_message.text.toLowerCase().includes(hashtag);
 
 const isVacancy = msg => hasHashtag(msg, "#вакансия");
 const isCV = msg => hasHashtag(msg, "#резюме");

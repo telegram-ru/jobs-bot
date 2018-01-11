@@ -13,6 +13,6 @@ setChannelId()
 http
   .createServer((req, res) => {
     res.writeHead(200);
-    res.end("200 OK\n");
+    res.end("200 OK");
   })
   .listen(3000);

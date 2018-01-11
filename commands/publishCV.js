@@ -2,8 +2,12 @@ const { bot, channelId } = require("../init");
 const { isCV, isChannelAdmin, isKeyword, isReply } = require("../validators");
 const deleteCommandMessage = require("../utils/command_traces_cleaner").default;
 
-const keywords = new Set(["в канал"]);
-const replyText = "Резюме опубликовано в " + process.env.APP_TELEGRAM_CHANNEL;
+const channel = process.env.APP_TELEGRAM_CHANNEL;
+
+const keywords = new Set(["канал"]);
+const replyText = `
+Резюме опубликовано в ${channel};
+`;
 
 async function publish(msg) {
   console.log("publishCV");
