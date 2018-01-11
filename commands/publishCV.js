@@ -4,7 +4,7 @@ const deleteCommandMessage = require("../utils/command_traces_cleaner").default;
 
 const channel = process.env.APP_TELEGRAM_CHANNEL;
 
-const keywords = new Set(["канал"]);
+const keywords = new Set(["канал", "в канал"]);
 const replyText = `
 Резюме опубликовано в ${channel};
 `;
