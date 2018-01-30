@@ -13,16 +13,20 @@ const isChannelAdmin = msg =>
   admins.has(channelId()) && admins.get(channelId()).has(msg.from.id);
 
 const hasHashtag = (msg, hashtag) =>
-  !!msg.reply_to_message.text &&
-  msg.reply_to_message.text.toLowerCase().includes(hashtag);
+  Boolean(msg.reply_to_message.text)
+    && msg.reply_to_message.text.toLowerCase().includes(hashtag);
 
-const isVacancy = msg => hasHashtag(msg, "#вакансия");
-const isCV = msg => hasHashtag(msg, "#резюме");
+const isVacancy = msg => hasHashtag(msg.reply_to_message, /#вакансия/i);
+const isVacancyNotReply = msg => hasHashtag(msg, /#вакансия/i);
+const isCV = msg => hasHashtag(msg, /#резюме/i);
 
-module.exports.isReply = isReply;
-module.exports.isKeyword = isKeyword;
-module.exports.isChatAdmin = isChatAdmin;
-module.exports.isChannelAdmin = isChannelAdmin;
-module.exports.hasHashtag = hasHashtag;
-module.exports.isVacancy = isVacancy;
-module.exports.isCV = isCV;
+module.exports = {
+  isReply,
+  isKeyword,
+  isChatAdmin,
+  isChannelAdmin,
+  hasHashtag,
+  isVacancy,
+  isCV,
+  isVacancyNotReply
+}

@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
+    "crc-32": "^1.1.1",
+    "natural": "^0.5.4",
     "node-telegram-bot-api": "^0.27.1"
   },
   "scripts": {

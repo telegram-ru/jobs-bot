@@ -6,6 +6,7 @@ const {
   isReply
 } = require("../validators");
 const deleteCommandMessage = require("../utils/command_traces_cleaner").default;
+const { storage } = require('../storage');
 
 const channel = process.env.APP_TELEGRAM_CHANNEL;
 
@@ -16,7 +17,7 @@ const replyText = `
 
 async function publish(msg) {
   console.log("publishVacancy");
-
+  storage.add(msg.reply_to_message);
   await bot.forwardMessage(
     channelId(),
     msg.chat.id,
