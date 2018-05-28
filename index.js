@@ -1,18 +1,18 @@
-const http = require("http");
-const { bot, channelId, setChannelId } = require("./init");
-const { admins, updateAdmins } = require("./admins");
-const exec = require("./commands/index");
+const debug = require('debug')('jobs-bot');
+const http = require('http');
+const { bot } = require('./init');
+const { setAllAdmins, admins } = require('./admins');
+const exec = require('./commands/index');
 
-setChannelId()
-  .then(() => updateAdmins(channelId()))
-  .catch(() => console.warn("Init error"))
-  .then(() => {
-    bot.on("message", msg => exec(msg));
-  });
+// set admins && set handlers messages
+Promise.all(setAllAdmins())
+  .then(() => bot.on('message', msg => exec(msg)))
+  .then(() => debug('admins', admins));
 
+// create dummy http-server
 http
   .createServer((req, res) => {
     res.writeHead(200);
-    res.end("200 OK");
+    res.end('200 OK');
   })
   .listen(3000);

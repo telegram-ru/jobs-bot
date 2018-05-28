@@ -1,4 +1,4 @@
-const TelegramBot = require("node-telegram-bot-api");
+const TelegramBot = require('node-telegram-bot-api');
 
 TelegramBot.prototype.deleteMessage = function deleteMessage(chatId, messageId, form = {}) {
   form.chat_id = chatId;
@@ -6,26 +6,8 @@ TelegramBot.prototype.deleteMessage = function deleteMessage(chatId, messageId, 
   return this._request('deleteMessage', { form });
 };
 
-const token = process.env.APP_BOT_TOKEN;
-const channel = process.env.APP_TELEGRAM_CHANNEL;
-
-const bot = new TelegramBot(token, { polling: true });
-const botName = "@javascript_jobs_publisher_bot";
-const channels = new Map();
-
-async function setChannelId() {
-  console.log("setChannelId");
-
-  try {
-    const { id } = await bot.getChat(channel);
-    channels.set(channel, id);
-  } catch (err) {
-    console.warn("setChannelId", err);
-  }
-}
+const bot = new TelegramBot(process.env.APP_BOT_TOKEN, { polling: true });
+const botName = '@PublisherRuBot';
 
 module.exports.bot = bot;
-module.exports.channelId = () => channels.get(channel);
-module.exports.name = botName;
-module.exports.setChannelId = setChannelId;
-module.exports.channel = channel;
+module.exports.botName = botName;

@@ -1,17 +1,13 @@
-const publishVacancyActivator = require("./publishVacancy").activator;
-const publishCVActivator = require("./publishCV").activator;
-const warnVacancyActivator = require("./warnVacancy").activator;
-const updateChannelAdminsActivator = require("./updateChannelAdmins").activator;
+const { activator: publishVacancyActivator } = require('./publishVacancy');
+const { activator: publishCVActivator } = require('./publishCV');
+const { activator: warnActivator } = require('./warn');
+const { activator: updateChannelAdminsActivator } = require('./updateChannelAdmins');
 
 const commands = [
   publishVacancyActivator,
   publishCVActivator,
-  warnVacancyActivator,
-  updateChannelAdminsActivator
+  warnActivator,
+  updateChannelAdminsActivator,
 ];
 
-function exec(msg) {
-  commands.forEach(activator => activator(msg));
-}
-
-module.exports = exec;
+module.exports = msg => commands.forEach(activator => activator(msg));

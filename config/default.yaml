@@ -1,0 +1,15 @@
+javascript_jobs:
+  id: -1001050008285
+  channel: "@javascript_jobs_feed"
+
+projects_jobs:
+  id: -1001095758423
+  channel: "@projects_jobs_feed"
+
+rustlang_jobs:
+  id: -1001165633075
+  channel: "@rustlang_jobs_feed"
+
+devops_jobs:
+  id: -1001051806860
+  channel: "@devops_jobs_feed"

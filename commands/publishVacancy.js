@@ -1,47 +1,37 @@
-const { bot, channelId } = require("../init");
+const debug = require('debug')('jobs-bot:publishVacancy');
+const config = require('config');
+
+const { bot } = require('../init');
 const {
-  isVacancy,
-  isChannelAdmin,
-  isKeyword,
-  isReply
-} = require("../validators");
-const deleteCommandMessage = require("../utils/command_traces_cleaner").default;
+  isVacancy, isChatAdmin, isKeyword, isReply,
+} = require('../validators');
 
-const channel = process.env.APP_TELEGRAM_CHANNEL;
-
-const keywords = new Set(["канал", "в канал"]);
-const replyText = `
+const keywords = new Set(['канал', 'в канал']);
+const getReplyText = channel => `
 Вакансия опубликована в канал ${channel}, спасибо за понимание правил
 `;
 
-async function publish(msg) {
-  console.log("publishVacancy");
+async function publish(msg, channel) {
+  debug('publish', msg, channel);
 
-  await bot.forwardMessage(
-    channelId(),
-    msg.chat.id,
-    msg.reply_to_message.message_id
-  );
+  await bot.forwardMessage(channel, msg.chat.id, msg.reply_to_message.message_id);
 
-  await bot.sendMessage(msg.chat.id, replyText, {
-    reply_to_message_id: msg.reply_to_message.message_id
+  await bot.sendMessage(msg.chat.id, getReplyText(channel), {
+    reply_to_message_id: msg.reply_to_message.message_id,
   });
 
-  await deleteCommandMessage(msg);
+  await bot.deleteMessage(msg.chat.id, msg.message_id);
 }
 
 async function activator(msg) {
   try {
-    if (
-      isReply(msg) &&
-      isVacancy(msg) &&
-      isKeyword(msg, keywords) &&
-      isChannelAdmin(msg)
-    ) {
-      await publish(msg);
+    if (isReply(msg) && isVacancy(msg) && isKeyword(msg, keywords) && isChatAdmin(msg)) {
+      const { channel } = config.get(msg.chat.username);
+
+      await publish(msg, channel);
     }
   } catch (err) {
-    console.warn("publishVacancy", err, msg);
+    debug('activator:error', err, msg);
   }
 }
 

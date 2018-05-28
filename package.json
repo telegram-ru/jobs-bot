@@ -3,6 +3,8 @@
   "version": "1.0.0",
   "license": "MIT",
   "dependencies": {
+    "config": "1.30.0",
+    "debug": "3.0.1",
     "node-telegram-bot-api": "^0.27.1"
   },
   "scripts": {
@@ -10,5 +12,10 @@
   },
   "now": {
     "alias": "telegram-jobs-bot.now.sh"
+  },
+  "devDependencies": {
+    "eslint": "4.9.0",
+    "eslint-config-airbnb-base": "12.1.0",
+    "eslint-plugin-import": "2.12.0"
   }
 }
