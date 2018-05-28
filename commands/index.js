@@ -1,13 +1,10 @@
-const { activator: publishVacancyActivator } = require('./publishVacancy');
-const { activator: publishCVActivator } = require('./publishCV');
-const { activator: warnActivator } = require('./warn');
-const { activator: updateChannelAdminsActivator } = require('./updateChannelAdmins');
+/* eslint-disable global-require */
 
-const commands = [
-  publishVacancyActivator,
-  publishCVActivator,
-  warnActivator,
-  updateChannelAdminsActivator,
+const allHandlers = [
+  require('./publishVacancy'),
+  require('./publishCV'),
+  require('./warn'),
+  require('./updateChannelAdmins'),
 ];
 
-module.exports = msg => commands.forEach(activator => activator(msg));
+module.exports = msg => allHandlers.forEach(handler => handler(msg));

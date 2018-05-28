@@ -1,11 +1,11 @@
 const debug = require('debug')('jobs-bot:updateChannelAdmins');
 const { setAllAdmins } = require('../admins');
 const { isKeyword } = require('../validators');
-const { bot } = require('../init');
+const bot = require('../bot');
 
 const keywords = new Set(['/update_admins']);
 
-async function activator(msg) {
+async function handler(msg) {
   try {
     if (msg.chat.type === 'private' && isKeyword(msg, keywords)) {
       const replyText = 'Обновил всех админов';
@@ -16,8 +16,8 @@ async function activator(msg) {
       });
     }
   } catch (err) {
-    debug('activator:error', err, msg);
+    debug('handler:error', err, msg);
   }
 }
 
-module.exports.activator = activator;
+module.exports = handler;

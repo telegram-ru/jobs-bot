@@ -7,7 +7,5 @@ TelegramBot.prototype.deleteMessage = function deleteMessage(chatId, messageId, 
 };
 
 const bot = new TelegramBot(process.env.APP_BOT_TOKEN, { polling: true });
-const botName = '@PublisherRuBot';
 
-module.exports.bot = bot;
-module.exports.botName = botName;
+module.exports = bot;

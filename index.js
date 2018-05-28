@@ -1,6 +1,6 @@
 const debug = require('debug')('jobs-bot');
 const http = require('http');
-const { bot } = require('./init');
+const bot = require('./bot');
 const { setAllAdmins, admins } = require('./admins');
 const exec = require('./commands/index');
 

@@ -1,7 +1,7 @@
 const debug = require('debug')('jobs-bot:publishVacancy');
 const config = require('config');
 
-const { bot } = require('../init');
+const bot = require('../bot');
 const {
   isVacancy, isChatAdmin, isKeyword, isReply,
 } = require('../validators');
@@ -23,7 +23,7 @@ async function publish(msg, channel) {
   await bot.deleteMessage(msg.chat.id, msg.message_id);
 }
 
-async function activator(msg) {
+async function handler(msg) {
   try {
     if (isReply(msg) && isVacancy(msg) && isKeyword(msg, keywords) && isChatAdmin(msg)) {
       const { channel } = config.get(msg.chat.username);
@@ -31,8 +31,8 @@ async function activator(msg) {
       await publish(msg, channel);
     }
   } catch (err) {
-    debug('activator:error', err, msg);
+    debug('handler:error', err, msg);
   }
 }
 
-module.exports.activator = activator;
+module.exports = handler;
