@@ -14,18 +14,18 @@ devops_jobs:
   id: -1001051806860
   channel: "@devops_jobs_feed"
 
-mobile_jobs:
-  id: -1001054966032
-  channel: "@mobile_jobs_feed"
-
 nodejs_jobs:
   id: -1001057165592
   channel: "@nodejs_jobs_feed"
 
-qa_jobs:
-  id: -1001089317451
-  channel: "@qa_jobs_feed"
+# mobile_jobs:
+#   id: -1001054966032
+#   channel: "@mobile_jobs_feed"
 
-agile_jobs:
-  id: -1001081141241
-  channel: "@agile_jobs_feed"
+# qa_jobs:
+#   id: -1001089317451
+#   channel: "@qa_jobs_feed"
+
+# agile_jobs:
+#   id: -1001081141241
+#   channel: "@agile_jobs_feed"

@@ -6,13 +6,13 @@ const exec = require('./commands/index');
 
 // set admins && set handlers messages
 Promise.all(setAllAdmins())
-  .then(async () => debug('bot', await bot.getMe()))
   .then(() => bot.on('message', msg => exec(msg)))
   .then(() => debug('admins', admins))
+  .then(async () => debug('bot', await bot.getMe()))
   .catch((...args) => debug('error @ init', args));
 
 // check is polling
-setInterval(() => debug('isPolling', bot.isPolling()), 5000);
+setInterval(() => debug('isPolling', bot.isPolling()), 60000);
 
 // create dummy http-server
 http
