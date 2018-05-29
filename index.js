@@ -7,7 +7,8 @@ const exec = require('./commands/index');
 // set admins && set handlers messages
 Promise.all(setAllAdmins())
   .then(() => bot.on('message', msg => exec(msg)))
-  .then(() => debug('admins', admins));
+  .then(() => debug('admins', admins))
+  .catch((...args) => debug('error @ init', args));
 
 // create dummy http-server
 http

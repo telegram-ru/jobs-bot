@@ -11,7 +11,11 @@
     "start": "node index.js"
   },
   "now": {
-    "alias": "telegram-jobs-bot.now.sh"
+    "alias": "telegram-jobs-bot.now.sh",
+    "env": {
+      "APP_BOT_TOKEN": "@jobs-bot-token",
+      "DEBUG": "jobs-bot:*"
+    }
   },
   "devDependencies": {
     "eslint": "4.9.0",
