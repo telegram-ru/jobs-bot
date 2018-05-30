@@ -11,10 +11,10 @@ const keywords = new Set(['канал', 'в канал']);
 const formatAnnonce = (messageId, channel, { userId, userFirstName, username }) => {
   const channelName = channel.replace('@', '');
   const escapedChannelName = channelName.replace(/_/g, '\\_');
-  const vacancyLink = `[вакансия](https://t.me/${channelName}/${messageId})`;
+  const vacancyLink = `[Вакансия](https://t.me/${channelName}/${messageId})`;
   const user = username ? `@${username}` : `[${userFirstName}](tg://user?id=${userId})`;
 
-  return ` 🏌️ Новая ${vacancyLink} от ${user} в канале @${escapedChannelName}`;
+  return ` 🏌️ ${vacancyLink} от ${user} опубликована в @${escapedChannelName}`;
 };
 
 const formatVacancy = (txt, chatName) => `
