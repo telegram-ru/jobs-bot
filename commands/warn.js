@@ -9,9 +9,9 @@ const keywords = new Set(['формат']);
 const escapeMarkdown = text => text.replace(/_/g, '\\_');
 
 const getReplyText = channel => `
-Привет! У нас есть [правила](https://teletype.in/@telegram-ru/r1WQe5F1m) оформления вакансий и резюме: они помогают компаниям привлекать людей, а соискателям — выбирать предложения.
+Привет! У нас есть [правила](https://teletype.in/@telegram-ru/r1WQe5F1m) оформления вакансий и резюме.
 
-После этого мы постим вакансию в канал ${escapeMarkdown(channel)}. Если не отредактировать, то удалим через 5-10 минут.
+Нужно отредактировать пост и мы его разместим в канал ${escapeMarkdown(channel)}. Если нет, то удалим через 5-10 минут.
 `;
 
 async function warn(msg, channel) {
