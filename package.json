@@ -14,7 +14,8 @@
     "alias": "telegram-jobs-bot.now.sh",
     "env": {
       "APP_BOT_TOKEN": "@jobs-bot-token",
-      "DEBUG": "jobs-bot:*"
+      "DEBUG": "jobs-bot:*",
+      "NODE_ENV": "production"
     }
   },
   "devDependencies": {
