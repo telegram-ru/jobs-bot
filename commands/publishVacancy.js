@@ -13,10 +13,10 @@ const escapeMarkdown = txt => txt.replace(/_/g, '\\_');
 const formatAnnonce = (messageId, channel, { userId, userFirstName, username }) => {
   const channelName = channel.replace('@', '');
   const escapedChannelName = escapeMarkdown(channelName);
-  const vacancyLink = `[Вакансия](https://t.me/${channelName}/${messageId})`;
+  const link = `[Вакансия](https://t.me/${channelName}/${messageId})`;
   const user = username ? `@${username}` : `[${userFirstName}](tg://user?id=${userId})`;
 
-  return ` 🏌️ ${vacancyLink} от ${escapeMarkdown(user)} опубликована в @${escapedChannelName}`;
+  return ` 🏌️ ${link} от ${escapeMarkdown(user)} опубликована в @${escapedChannelName}`;
 };
 
 const formatVacancy = (txt, chatName) => `
