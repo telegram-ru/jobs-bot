@@ -16,6 +16,12 @@
     "env": {
       "APP_BOT_TOKEN": "@jobs-bot-token",
       "DEBUG": "jobs-bot:*"
+    },
+    "scale": {
+      "bru1": {
+        "min": 1,
+        "max": "auto"
+      }
     }
   },
   "devDependencies": {
