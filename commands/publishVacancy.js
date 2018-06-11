@@ -33,7 +33,7 @@ async function publish(msg) {
   debug('publish', msg, channel);
 
   const commandMessageId = msg.message_id;
-  const vacancyMessageId = msg.reply_to_message.message_id;
+  // const vacancyMessageId = msg.reply_to_message.message_id;
 
   // send to channel
   const channelMessage = formatVacancy(msg.reply_to_message.text, msg.chat.username);
@@ -58,7 +58,7 @@ async function publish(msg) {
 
   // delete messages
   await bot.deleteMessage(msg.chat.id, commandMessageId);
-  await bot.deleteMessage(msg.chat.id, vacancyMessageId);
+  // await bot.deleteMessage(msg.chat.id, vacancyMessageId);
 }
 
 async function handler(msg) {
