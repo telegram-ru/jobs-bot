@@ -9,8 +9,8 @@ const isChatAdmin = msg => admins.has(msg.chat.id) && admins.get(msg.chat.id).ha
 const hasHashtag = (msg, hashtag) =>
   !!msg.reply_to_message.text && msg.reply_to_message.text.toLowerCase().includes(hashtag);
 
-const isVacancy = msg => hasHashtag(msg, '#вакансия');
-const isCV = msg => hasHashtag(msg, '#резюме') || hasHashtag(msg, '#ищу');
+const isVacancy = msg => hasHashtag(msg, '#вакансия ');
+const isCV = msg => hasHashtag(msg, '#резюме ') || hasHashtag(msg, '#ищу ');
 
 module.exports.isReply = isReply;
 module.exports.isKeyword = isKeyword;
