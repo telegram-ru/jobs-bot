@@ -33,7 +33,7 @@ async function publish(msg) {
   debug('publish', msg, channel);
 
   const commandMessageId = msg.message_id;
-  // const vacancyMessageId = msg.reply_to_message.message_id;
+  const vacancyMessageId = msg.reply_to_message.message_id;
 
   // send to channel
   const channelMessage = formatVacancy(msg.reply_to_message.text, msg.chat.username);
@@ -51,6 +51,7 @@ async function publish(msg) {
 
   const { message_id: chatMessageId } = await bot.sendMessage(msg.chat.id, replyMessage, {
     parse_mode: 'Markdown',
+    reply_to_message_id: vacancyMessageId,
   });
 
   debug('publish:replyMessage', replyMessage);
