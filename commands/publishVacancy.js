@@ -64,8 +64,15 @@ async function publish(msg) {
 
 async function handler(msg) {
   try {
-    if (isReply(msg) && isVacancy(msg) && isKeyword(msg, keywords) && isChatAdmin(msg)) {
-      await publish(msg);
+    if (isReply(msg) && isKeyword(msg, keywords) && isChatAdmin(msg)) {
+      if (isVacancy(msg, keywords)) {
+        await publish(msg);
+      } else {
+        await bot.sendMessage(msg.chat.id, 'В сообщении нет тега вакансия 😕', {
+          parse_mode: 'Markdown',
+          reply_to_message_id: msg.reply_to_message.message_id,
+        });
+      }
     }
   } catch (err) {
     debug('handler:error', err, msg);
