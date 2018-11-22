@@ -2,7 +2,10 @@ const debug = require('debug')('jobs-bot:init');
 const http = require('http');
 const bot = require('./bot');
 const { setAllAdmins, admins } = require('./admins');
-const exec = require('./commands/index');
+const exec = require('./commands');
+
+// debug node_env
+debug('node_env', process.env.NODE_ENV);
 
 // set admins && set handlers messages
 Promise.all(setAllAdmins())

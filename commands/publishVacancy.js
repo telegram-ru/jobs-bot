@@ -8,21 +8,23 @@ const {
 
 const keywords = new Set(['канал', 'в канал']);
 
+const escapeMarkdown = txt => txt.replace(/_/g, '\\_');
+
 const formatAnnonce = (messageId, channel, { userId, userFirstName, username }) => {
   const channelName = channel.replace('@', '');
-  const escapedChannelName = channelName.replace(/_/g, '\\_');
-  const vacancyLink = `[вакансия](https://t.me/${channelName}/${messageId})`;
+  const escapedChannelName = escapeMarkdown(channelName);
+  const link = `[Вакансия](https://t.me/${channelName}/${messageId})`;
   const user = username ? `@${username}` : `[${userFirstName}](tg://user?id=${userId})`;
 
-  return ` 🏌️ В канал @${escapedChannelName} опубликована ${vacancyLink} от ${user}`;
+  return ` 🏌️ ${link} от ${escapeMarkdown(user)} опубликована в @${escapedChannelName}`;
 };
 
-const formatVacancy = (txt, channel) => `
+const formatVacancy = (txt, chatName) => `
 ${txt}
 
 —
 
-👉 Обсуждение вакансии в чате ${channel}
+👉 Обсуждение вакансии в чате @${chatName}
 `;
 
 async function publish(msg) {
@@ -34,7 +36,7 @@ async function publish(msg) {
   const vacancyMessageId = msg.reply_to_message.message_id;
 
   // send to channel
-  const channelMessage = formatVacancy(msg.reply_to_message.text, channel);
+  const channelMessage = formatVacancy(msg.reply_to_message.text, msg.chat.username);
   const { message_id: channelMessageId } = await bot.sendMessage(channel, channelMessage);
   debug('publish:channelMessage', channelMessage);
   debug('publish:channelMessageId', channelMessageId);
@@ -49,6 +51,7 @@ async function publish(msg) {
 
   const { message_id: chatMessageId } = await bot.sendMessage(msg.chat.id, replyMessage, {
     parse_mode: 'Markdown',
+    reply_to_message_id: vacancyMessageId,
   });
 
   debug('publish:replyMessage', replyMessage);
@@ -56,7 +59,7 @@ async function publish(msg) {
 
   // delete messages
   await bot.deleteMessage(msg.chat.id, commandMessageId);
-  await bot.deleteMessage(msg.chat.id, vacancyMessageId);
+  // await bot.deleteMessage(msg.chat.id, vacancyMessageId);
 }
 
 async function handler(msg) {
