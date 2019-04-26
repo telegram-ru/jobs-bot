@@ -40,7 +40,9 @@ async function publish(msg) {
 
   // send to channel
   const channelMessage = formatVacancy(msg.reply_to_message.text, msg.chat.username);
-  const { message_id: channelMessageId } = await bot.sendMessage(channel, channelMessage);
+  const { message_id: channelMessageId } = await bot.sendMessage(channel, channelMessage, {
+    disable_web_page_preview: true,
+  });
   debug('publish:channelMessage', channelMessage);
   debug('publish:channelMessageId', channelMessageId);
 
