@@ -23,7 +23,7 @@ function getReplyText(channel, reasons = []) {
   const hasErrors = reasons.length > 0;
   const channelFormatted = escapeMarkdown(channel);
   const errors = reasons.map(reason => `• ${reasonToWarn[reason]}`).join(";\n");
-  const printErrors = hasErrors ? `\nНужно исправить\n${errors}` : ``;
+  const printErrors = hasErrors ? `\n\nНужно исправить:\n${errors}` : ``;
 
   return `
 Привет! У нас есть [правила](https://teletype.in/@telegram-ru/r1WQe5F1m) оформления вакансий и резюме.
