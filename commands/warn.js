@@ -1,25 +1,50 @@
-const debug = require('debug')('jobs-bot:warn');
-const config = require('config');
+const debug = require("debug")("jobs-bot:warn");
+const config = require("config");
 
-const bot = require('../bot');
-const { isChatAdmin, isKeyword, isReply } = require('../validators');
+const bot = require("../bot");
+const { isChatAdmin, isKeyword, isReply } = require("../validators");
 
-const keywords = new Set(['формат']);
+const keywords = new Set(["формат"]);
+const reasonToWarn = {
+  адрес: "адрес или хотя бы город",
+  формат: "офис или удалёнка",
+  занятость: "фуллтайм, парт-тайм или фриланс",
+  вилка: "зарплатная вилка обязательна с обеих сторон",
+  название: "название компании или кадрового агентства",
+  контакты: "контакты, по которым можно связаться"
+};
 
-const escapeMarkdown = text => text.replace(/_/g, '\\_');
+function escapeMarkdown(text) {
+  return text.replace(/_/g, "\\_");
+}
 
-const getReplyText = channel => `
+function getReplyText(channel, reasons = []) {
+  const hasErrors = reasons.length > 0;
+  const channelFormatted = escapeMarkdown(channel);
+  const errors = reasons.map(reason => `• ${reason};\n`);
+
+  return `
 Привет! У нас есть [правила](https://teletype.in/@telegram-ru/r1WQe5F1m) оформления вакансий и резюме.
 
-Нужно отредактировать пост и мы его разместим в канал ${escapeMarkdown(channel)}. Если нет, то удалим через 5-10 минут.
+Отредактируйте и мы его разместим в канал ${channelFormatted}, или удалим через 5-10 минут если нет.
+${hasErrors &&
+  `
+Нужно исправить:
+${errors}
+`}
 `;
+}
 
-async function warn(msg, channel) {
-  debug('warn', msg, channel);
+async function warn(msg) {
+  const { channel } = config.get(msg.chat.username);
+  const [, ...reasons] = msg.text.split(" ");
 
-  await bot.sendMessage(msg.chat.id, getReplyText(channel), {
+  debug("warn", msg, channel);
+  debug("warn:reasons", reasons);
+
+  await bot.sendMessage(msg.chat.id, getReplyText(channel, reasons), {
     reply_to_message_id: msg.reply_to_message.message_id,
-    parse_mode: 'Markdown',
+    parse_mode: "Markdown"
   });
 
   await bot.deleteMessage(msg.chat.id, msg.message_id);
@@ -28,12 +53,10 @@ async function warn(msg, channel) {
 async function handler(msg) {
   try {
     if (isReply(msg) && isKeyword(msg, keywords) && isChatAdmin(msg)) {
-      const { channel } = config.get(msg.chat.username);
-
-      await warn(msg, channel);
+      await warn(msg);
     }
   } catch (err) {
-    debug('handler:error', err, msg);
+    debug("handler:error", err, msg);
   }
 }
 
