@@ -22,7 +22,10 @@ function escapeMarkdown(text) {
 function getReplyText(channel, reasons = []) {
   const hasErrors = reasons.length > 0;
   const channelFormatted = escapeMarkdown(channel);
-  const errors = reasons.map(reason => `• ${reasonToWarn[reason]}`).join(";\n");
+  const errors = reasons
+    .filter(reason => reasonToWarn[reason])
+    .map(reason => `• ${reasonToWarn[reason]}`)
+    .join(";\n");
   const printErrors = hasErrors ? `\n\nНужно исправить:\n${errors}` : ``;
 
   return `
