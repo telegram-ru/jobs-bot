@@ -18,6 +18,13 @@ nodejs_jobs:
   id: -1001057165592
   channel: "@nodejs_jobs_feed"
 
+vuejs_jobs:
+  id: -1001473341320
+  channel: "@vuejs_jobs_feed"
+
+israel_jobs:
+  id: -1001112614954
+  channel: "@israel_jobs_feed"
 # mobile_jobs:
 #   id: -1001054966032
 #   channel: "@mobile_jobs_feed"
