@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "public": true,
+  "alias": "telegram-jobs-bot.now.sh",
+  "env": {
+    "APP_BOT_TOKEN": "@jobs-bot-token",
+    "DEBUG": "jobs-bot:*",
+    "NODE_ENV": "production"
+  },
+  "scale": {
+    "bru1": {
+      "min": 1,
+      "max": 1
+    }
+  }
+}

@@ -6,6 +6,7 @@ const { isChatAdmin, isKeyword, isReply } = require("../validators");
 
 const keywords = new Set(["формат"]);
 const reasonToWarn = {
+  тег: "нужен хэштэг #вакансия",
   адрес: "адрес или хотя бы город",
   формат: "офис или удалёнка",
   занятость: "фуллтайм, парт-тайм или фриланс",
@@ -21,17 +22,13 @@ function escapeMarkdown(text) {
 function getReplyText(channel, reasons = []) {
   const hasErrors = reasons.length > 0;
   const channelFormatted = escapeMarkdown(channel);
-  const errors = reasons.map(reason => `• ${reason};\n`);
+  const errors = reasons.map(reason => `• ${reasonToWarn[reason]}`).join(";\n");
+  const printErrors = hasErrors ? `\nНужно исправить\n${errors}` : ``;
 
   return `
 Привет! У нас есть [правила](https://teletype.in/@telegram-ru/r1WQe5F1m) оформления вакансий и резюме.
 
-Отредактируйте и мы его разместим в канал ${channelFormatted}, или удалим через 5-10 минут если нет.
-${hasErrors &&
-  `
-Нужно исправить:
-${errors}
-`}
+Отредактируйте и мы его разместим в канал ${channelFormatted}, или удалим через 5-10 минут если нет.${printErrors}
 `;
 }
 
@@ -51,8 +48,16 @@ async function warn(msg) {
 }
 
 async function handler(msg) {
+  const [firstWordOfMessage] = msg.text.split(" ");
+  debug({ firstWordOfMessage });
+  debug({ msg });
+
   try {
-    if (isReply(msg) && isKeyword(msg, keywords) && isChatAdmin(msg)) {
+    if (
+      isReply(msg) &&
+      isKeyword(firstWordOfMessage, keywords) &&
+      isChatAdmin(msg)
+    ) {
       await warn(msg);
     }
   } catch (err) {
